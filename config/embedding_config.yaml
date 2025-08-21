@@ -1,0 +1,68 @@
+# Configuration for sequence embedding extraction
+
+# Default embedding model configuration
+default_model: dnabert2
+
+# Model configurations
+models:
+  dnabert2:
+    name: "zhihan1996/DNABERT-2-117M"
+    max_length: 2048
+    batch_size: 32
+    sequence_type: "dna"
+    description: "DNABERT-2 117M parameters, good balance of performance and speed"
+    
+  dnabert2_large:
+    name: "zhihan1996/DNABERT-2-512M"
+    max_length: 2048
+    batch_size: 16  # Smaller batch size for larger model
+    sequence_type: "dna"
+    description: "DNABERT-2 512M parameters, better performance but slower"
+    
+  evo:
+    name: "togethercomputer/evo-1-8k-base"
+    max_length: 8192
+    batch_size: 8   # Even smaller batch for very long sequences
+    sequence_type: "rna"
+    description: "Evo model, supports longer sequences up to 8k"
+    
+  evo2:
+    name: "togethercomputer/evo-1-131k-base"
+    max_length: 131072
+    batch_size: 4   # Very small batch for extremely long context
+    sequence_type: "rna"
+    description: "Evo-2 131k context model, supports very long RNA sequences"
+    
+  evo2_large:
+    name: "togethercomputer/evo-1-650b-base"
+    max_length: 131072
+    batch_size: 2   # Minimal batch size for large model
+    sequence_type: "rna"
+    description: "Evo-2 650B parameters, state-of-the-art RNA modeling"
+
+# Dimensionality reduction configuration
+dimensionality_reduction:
+  method: "pca"           # pca or tsne
+  n_components: 128       # Number of components to keep
+  random_state: 42
+  
+  # PCA specific settings
+  pca:
+    explained_variance_threshold: 0.95  # Keep components explaining this much variance
+    
+  # t-SNE specific settings  
+  tsne:
+    perplexity: 30
+    n_iter: 1000
+    learning_rate: 200.0
+
+# Processing configuration
+processing:
+  device: "auto"          # auto, cpu, cuda
+  save_raw_embeddings: true
+  save_reduced_embeddings: true
+  
+# Output paths (relative to project root)
+output:
+  embeddings_dir: "outputs/embeddings"
+  models_dir: "outputs/models"

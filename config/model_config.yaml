@@ -1,0 +1,116 @@
+# Configuration for RNA prediction models
+
+# Multi-task XGBoost configuration
+xgboost:
+  # Basic parameters
+  n_estimators: 100
+  learning_rate: 0.1
+  max_depth: 6
+  subsample: 0.8
+  colsample_bytree: 0.8
+  random_state: 42
+  
+  # Regularization
+  reg_alpha: 0.0      # L1 regularization
+  reg_lambda: 1.0     # L2 regularization
+  gamma: 0.0          # Minimum split loss
+  
+  # Advanced parameters
+  min_child_weight: 1
+  max_delta_step: 0
+  scale_pos_weight: 1
+  
+  # Early stopping
+  early_stopping_rounds: 10
+  
+  # Performance
+  n_jobs: -1          # Use all available cores
+  verbosity: 0        # Reduce output verbosity
+
+# Pipeline configuration
+pipeline:
+  # Sequence feature extraction
+  sequence_features:
+    # Embedding configuration
+    embedding:
+      model_name: "zhihan1996/DNABERT-2-117M"  # or use evo2 for RNA-specific modeling
+      max_length: 2048
+      batch_size: 32
+    
+    # Dimensionality reduction
+    dimensionality_reduction:
+      method: "pca"
+      n_components: 128
+      random_state: 42
+    
+    # Structure features
+    structure:
+      temperature: 37.0
+  
+  # Column configuration
+  sequence_column: "sequence"
+  
+  # Target configuration
+  target_columns:
+    - "yield"
+    - "dsRNA_percent" 
+    - "expression"
+  
+  # Default covariate columns (can be overridden)
+  covariate_columns:
+    - "enzyme_type"
+    - "temperature"
+    - "buffer_ph"
+
+# Training configuration
+training:
+  test_size: 0.2
+  random_state: 42
+  cross_validation:
+    n_folds: 5
+    scoring: "neg_mean_squared_error"
+  
+  # Validation
+  validation_split: 0.2  # From training data
+
+# Evaluation configuration
+evaluation:
+  metrics:
+    - "r2"
+    - "mse"
+    - "rmse"
+    - "mae"
+    - "pearson_r"
+    - "spearman_r"
+  
+  # Plotting
+  plot_predictions: true
+  plot_residuals: true
+  plot_feature_importance: true
+  
+  # Report generation
+  generate_report: true
+  
+# Output configuration
+output:
+  models_dir: "outputs/models"
+  results_dir: "outputs/results"
+  plots_dir: "outputs/plots"
+  reports_dir: "outputs/reports"
+
+# Hyperparameter tuning (optional)
+hyperparameter_tuning:
+  enabled: false
+  method: "grid_search"  # grid_search, random_search, bayesian
+  
+  # Parameters to tune
+  param_grid:
+    n_estimators: [50, 100, 200]
+    learning_rate: [0.05, 0.1, 0.2]
+    max_depth: [3, 6, 9]
+    subsample: [0.7, 0.8, 0.9]
+  
+  # Tuning configuration
+  cv_folds: 3
+  scoring: "neg_mean_squared_error"
+  n_jobs: -1
