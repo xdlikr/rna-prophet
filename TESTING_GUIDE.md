@@ -26,7 +26,7 @@ python test_models.py
 ```
 
 This comprehensive test:
-- 🤖 Tests all 5 embedding models (DNABERT-2, Evo, Evo-2)
+- 🤖 Tests all 8 embedding models (DNABERT-2, Evo, Evo-2)
 - 📥 Downloads models (may take time)
 - 🧬 Extracts embeddings from test sequences
 - 🔧 Tests full pipeline integration
@@ -42,8 +42,16 @@ These should work on most systems:
 ### ⚠️ Evo Models  
 May require good internet and more memory:
 - `evo` - 8k context, RNA-native
-- `evo2` - 131k context (may not be publicly available yet)
-- `evo2_large` - 650B parameters (may not be publicly available yet)
+
+### 🆕 Evo-2 Models (Official Arc Institute)
+Now publicly available but with specific requirements:
+- `evo2_7b` - 7B parameters, 1M context (recommended)
+- `evo2_40b` - 40B parameters, 1M context (requires multiple GPUs)
+- `evo2_7b_base` - 7B parameters, 8K context
+- `evo2_40b_base` - 40B parameters, 8K context
+- `evo2_1b_base` - 1B parameters, 8K context (lightweight)
+
+**Requirements**: NVIDIA GPU with Compute Capability 8.9+, CUDA 12.1+, Python 3.12
 
 ## Troubleshooting
 
@@ -68,10 +76,16 @@ pip install -r requirements.txt
 python main.py train data.csv --embedding-model dnabert2 --batch-size 4
 ```
 
-**4. Evo2 Models Not Found**
+**4. Evo-2 Models Fail to Load**
 ```bash
-# These may not be publicly available yet
-# Use alternatives:
+# Check requirements: NVIDIA GPU Compute Capability 8.9+, CUDA 12.1+, Python 3.12
+# Install prerequisites:
+conda install -c nvidia cuda-nvcc cuda-cudart-dev
+conda install -c conda-forge transformer-engine-torch=2.3.0
+pip install flash-attn==2.8.0.post2 --no-build-isolation
+pip install evo2
+
+# Use alternatives if hardware incompatible:
 python main.py train data.csv --embedding-model evo
 python main.py train data.csv --embedding-model dnabert2
 ```
@@ -90,20 +104,21 @@ python main.py train data.csv --embedding-model dnabert2
 
 **❌ Failure Example:**
 ```
-🤖 Testing evo2 model availability...
-  ✅ Model config found: togethercomputer/evo-1-131k-base
+🤖 Testing evo2_7b model availability...
+  ✅ Model config found: arcinstitute/evo2_7b
   ✅ SequenceEmbedder created
   ❌ Model loading failed after 30.1s
-     Error: Repository not found
-  💡 Model not found. This model might not be publicly available yet.
+     Error: CUDA compute capability 8.9 required
+  💡 Requires NVIDIA GPU with Compute Capability 8.9+, CUDA 12.1+, Python 3.12
+     Install with: pip install evo2
 ```
 
 ## What to Do Next
 
 ### If All Models Work ✅
 ```bash
-# You're all set! Use any model
-python main.py train data.csv --embedding-model evo2
+# You're all set! Use the best available model
+python main.py train data.csv --embedding-model evo2_7b
 ```
 
 ### If Only DNABERT-2 Works ✅
@@ -148,10 +163,11 @@ Check:
 | `dnabert2` | 2-5 min | 4GB | Good |
 | `dnabert2_large` | 5-10 min | 8GB | Better |
 | `evo` | 10-15 min | 12GB | Excellent |
-| `evo2`* | 15-20 min | 16GB | Outstanding |
-| `evo2_large`* | 30+ min | 40GB+ | Best |
+| `evo2_7b` | 15-25 min | 24GB+ | Outstanding |
+| `evo2_40b` | 45+ min | 100GB+ | Best |
+| `evo2_1b_base` | 5-10 min | 8GB | Very Good |
 
-*May not be publicly available yet
+**Note**: Evo-2 models require specific hardware (GPU Compute Capability 8.9+)
 
 ## Getting Help
 

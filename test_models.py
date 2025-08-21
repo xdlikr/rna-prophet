@@ -224,7 +224,8 @@ def suggest_alternatives(failed_models, working_models):
         
         for model in failed_models:
             if model.startswith('evo2'):
-                print(f"   💡 {model}: May not be publicly available yet. Use 'evo' or 'dnabert2' instead")
+                print(f"   💡 {model}: Requires NVIDIA GPU with Compute Capability 8.9+, CUDA 12.1+, Python 3.12")
+                print(f"        Install with: pip install evo2")
             elif model.startswith('evo'):
                 print(f"   💡 {model}: Try with better internet connection or use 'dnabert2'")
             elif model.startswith('dnabert2'):
@@ -252,8 +253,8 @@ def main():
         print("\n🚨 RNA-Prophet imports failed. Check installation.")
         return
     
-    # Define models to test
-    models_to_test = ['dnabert2', 'dnabert2_large', 'evo', 'evo2', 'evo2_large']
+    # Define models to test (updated with official Evo-2 models)
+    models_to_test = ['dnabert2', 'dnabert2_large', 'evo', 'evo2_7b', 'evo2_40b', 'evo2_7b_base', 'evo2_1b_base']
     
     print(f"\n🧪 Testing {len(models_to_test)} models...")
     print("Note: This may take several minutes as models are downloaded")

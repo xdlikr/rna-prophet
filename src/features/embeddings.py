@@ -204,17 +204,35 @@ class EmbeddingConfig:
             'description': 'Evo model, supports longer sequences up to 8k',
             'sequence_type': 'rna'
         },
-        'evo2': {
-            'name': 'togethercomputer/evo-1-131k-base',
-            'max_length': 131072,
-            'description': 'Evo-2 131k context model, supports very long RNA sequences',
-            'sequence_type': 'rna'
+        'evo2_7b': {
+            'name': 'arcinstitute/evo2_7b',
+            'max_length': 1048576,  # 1M context
+            'description': 'Evo-2 7B parameter model with 1M context (official Arc Institute)',
+            'sequence_type': 'dna'
         },
-        'evo2_large': {
-            'name': 'togethercomputer/evo-1-650b-base',
-            'max_length': 131072,
-            'description': 'Evo-2 650B parameters, state-of-the-art RNA modeling',
-            'sequence_type': 'rna'
+        'evo2_40b': {
+            'name': 'arcinstitute/evo2_40b',
+            'max_length': 1048576,  # 1M context
+            'description': 'Evo-2 40B parameter model with 1M context (requires multiple GPUs)',
+            'sequence_type': 'dna'
+        },
+        'evo2_7b_base': {
+            'name': 'arcinstitute/evo2_7b_base',
+            'max_length': 8192,
+            'description': 'Evo-2 7B base model with 8K context',
+            'sequence_type': 'dna'
+        },
+        'evo2_40b_base': {
+            'name': 'arcinstitute/evo2_40b_base',
+            'max_length': 8192,
+            'description': 'Evo-2 40B base model with 8K context',
+            'sequence_type': 'dna'
+        },
+        'evo2_1b_base': {
+            'name': 'arcinstitute/evo2_1b_base',
+            'max_length': 8192,
+            'description': 'Evo-2 1B base model with 8K context (lightweight)',
+            'sequence_type': 'dna'
         }
     }
     
